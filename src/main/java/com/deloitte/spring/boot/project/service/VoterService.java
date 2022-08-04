@@ -1,9 +1,5 @@
 package com.deloitte.spring.boot.project.service;
 
-
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -11,14 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.deloitte.spring.boot.project.exception.NoSuchRecordException;
-import com.deloitte.spring.boot.project.exception.AlreadyVotedException;
-import com.deloitte.spring.boot.project.exception.NoSuchCandidateRecordException;
-import com.deloitte.spring.boot.project.exception.NoSuchConstituencyException;
-import com.deloitte.spring.boot.project.exception.NoSuchElectionException;
+
 import com.deloitte.spring.boot.project.exception.NoSuchVoterException;
-import com.deloitte.spring.boot.project.exception.NotScheduledException;
-import com.deloitte.spring.boot.project.exception.UnauthorisedVoterException;
-import com.deloitte.spring.boot.project.model.Election;
+
 import com.deloitte.spring.boot.project.model.Vote;
 import com.deloitte.spring.boot.project.model.Voter;
 import com.deloitte.spring.boot.project.repository.CandidateRepository;
@@ -110,6 +101,23 @@ public class VoterService {
 			return result;
 		}
 		Logger.error("No results present");
+		throw new NoSuchRecordException("No record present");
+	}
+	
+	public String getVoteForAllParty() throws NoSuchRecordException {
+		String result = "";
+		List<Object[]> list = voteRepository.partyVoteCount();
+		if (!list.isEmpty()) {
+			for (Object[] obj : list) {
+				String partyId = obj[0].toString();
+				String partyName = partyRepository.findById(partyId).get().getPartyName();
+				String votes = obj[1].toString();
+				result = result + "\n" + partyName + " has received " + votes + " vote(s)"+ ".";
+			}
+			Logger.info("viewVoteForAllParty");
+			return result;
+		}
+		Logger.error("INo results present");
 		throw new NoSuchRecordException("No record present");
 	}
 }

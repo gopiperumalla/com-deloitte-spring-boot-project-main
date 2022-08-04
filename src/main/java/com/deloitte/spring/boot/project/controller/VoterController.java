@@ -86,4 +86,11 @@ public class VoterController {
 		return response;
 	}
 	
+	@RequestMapping(path = "/results/viewPartyVoteCount", method = RequestMethod.GET)
+	public ResponseEntity<String> getPartyVoteCount() {
+		String result = voterService.getVoteForAllParty();
+		ResponseEntity<String> response = new ResponseEntity<>(result, HttpStatus.OK);
+		return response;
+	}
+	
 }

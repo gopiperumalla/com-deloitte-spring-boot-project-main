@@ -19,11 +19,13 @@ import com.deloitte.spring.boot.project.model.Administrator;
 import com.deloitte.spring.boot.project.model.Candidates;
 import com.deloitte.spring.boot.project.model.Constituency;
 import com.deloitte.spring.boot.project.model.Election;
+import com.deloitte.spring.boot.project.model.ElectoralOfficer;
 import com.deloitte.spring.boot.project.model.Party;
 import com.deloitte.spring.boot.project.repository.AdministratorRepository;
 import com.deloitte.spring.boot.project.repository.CandidateRepository;
 import com.deloitte.spring.boot.project.repository.ConstituencyRepository;
 import com.deloitte.spring.boot.project.repository.ElectionRepository;
+import com.deloitte.spring.boot.project.repository.ElectoralOfficerRepository;
 import com.deloitte.spring.boot.project.repository.PartyRepository;
 
 @Service
@@ -43,6 +45,9 @@ public class AdministratorService {
 
 	@Autowired
 	private ConstituencyRepository constituencyRepository;
+	
+	@Autowired
+	ElectoralOfficerRepository electoralOfficerRepository;
 
 	private final Logger Logger = LoggerFactory.getLogger(this.getClass());
 
@@ -266,5 +271,46 @@ public class AdministratorService {
 		Logger.error("Given id does not exist to delete constituency");
 		throw new NoSuchConstituencyException("Given id does not exist to delete constituency");
 	}
+	
+	//Get All Officers
+		public List<ElectoralOfficer> getAllOfficers() throws NoSuchRecordException {
+			List<ElectoralOfficer> list = electoralOfficerRepository.findAll();
+			if (!list.isEmpty()) {
+				Logger.info("findAllOfficers");
+				return list;
+			}
+			Logger.error("No List found");
+			throw new NoSuchRecordException("No List found");
+		}
 
-}
+	//Get Officer By Name
+		public List<ElectoralOfficer> getOfficerByName(String electoralOfficerName) {
+			List<ElectoralOfficer> List = electoralOfficerRepository.findByelectoralOfficerName(electoralOfficerName);
+			if (!List.isEmpty()) {
+				return List;
+			} else {
+				String errorMessage = "Officer with name " + electoralOfficerName + " not found.";
+				throw new NoSuchConstituencyException(errorMessage);
+			}	}
+
+	//Update Officer
+		public @Valid ElectoralOfficer updateOfficer(@Valid ElectoralOfficer electoralofficer) {
+			if (electoralOfficerRepository.existsById(electoralofficer.getElectoralOfficerId()))
+				return electoralOfficerRepository.save(electoralofficer);
+			Logger.error("No List found");
+			throw new NoSuchRecordException("No List found");		
+		}
+
+	//Delete Officer
+		public boolean deleteOfficer(String electoralOfficerId) throws NoSuchConstituencyException {
+			if (electoralOfficerRepository.existsById(electoralOfficerId)) {
+				electoralOfficerRepository.deleteById(electoralOfficerId);
+				Logger.info("deleteOfficer");
+				return true;
+			}
+			Logger.error("Given id does not exist to delete officer");
+			throw new NoSuchConstituencyException("Given id does not exist to delete officer");
+		}
+
+	}
+

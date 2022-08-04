@@ -18,7 +18,7 @@ public class ElectoralOfficer implements Serializable {
 	private String electoralOfficerId;
 
 	@Column(name = "ELECTORAL_OFFICER_NAME", length = 50)
-	private String electroalOfficerName;
+	private String electoralOfficerName;
 
 	@Column(name = "ELECTORAL_OFFICER_PASSWORD")
 	private String electoralOfficerPassword;
@@ -30,7 +30,7 @@ public class ElectoralOfficer implements Serializable {
 	public ElectoralOfficer(String electoralOfficerId, String electroalOfficerName, String electoralOfficerPassword) {
 		super();
 		this.electoralOfficerId = electoralOfficerId;
-		this.electroalOfficerName = electroalOfficerName;
+		this.electoralOfficerName = electroalOfficerName;
 		this.electoralOfficerPassword = electoralOfficerPassword;
 	}
 
@@ -44,11 +44,11 @@ public class ElectoralOfficer implements Serializable {
 	}
 
 	public String getElectroalOfficerName() {
-		return electroalOfficerName;
+		return electoralOfficerName;
 	}
 
 	public void setElectroalOfficerName(String electroalOfficerName) {
-		this.electroalOfficerName = electroalOfficerName;
+		this.electoralOfficerName = electroalOfficerName;
 	}
 
 	public String getElectoralOfficerPassword() {
@@ -62,7 +62,7 @@ public class ElectoralOfficer implements Serializable {
 	@Override
 	public String toString() {
 		return "ElectoralOfficer [electoralOfficerId=" + electoralOfficerId + ", electroalOfficerName="
-				+ electroalOfficerName + ", electoralOfficerPassword=" + electoralOfficerPassword + "]";
+				+ electoralOfficerName + ", electoralOfficerPassword=" + electoralOfficerPassword + "]";
 	}
 
 }

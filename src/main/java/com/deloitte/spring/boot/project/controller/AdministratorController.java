@@ -19,9 +19,11 @@ import com.deloitte.spring.boot.project.model.Administrator;
 import com.deloitte.spring.boot.project.model.Candidates;
 import com.deloitte.spring.boot.project.model.Constituency;
 import com.deloitte.spring.boot.project.model.Election;
+import com.deloitte.spring.boot.project.model.ElectoralOfficer;
 import com.deloitte.spring.boot.project.model.Party;
-import com.deloitte.spring.boot.project.model.Voter;
+
 import com.deloitte.spring.boot.project.service.AdministratorService;
+import com.deloitte.spring.boot.project.service.ElectoralOfficerService;
 
 @RestController
 @RequestMapping(path = "/admin")
@@ -29,6 +31,9 @@ public class AdministratorController {
 
 	@Autowired
 	private AdministratorService adminService;
+	
+	@Autowired
+	ElectoralOfficerService  eoService;
 
 	@RequestMapping(path = "/add-admin", method = RequestMethod.POST)
 	public ResponseEntity<String> addAdmin(@RequestBody Administrator admin) throws InvalidFieldException {
@@ -191,5 +196,45 @@ public class AdministratorController {
 		}
 		return response;
 	}
+	
+	@RequestMapping(path = "/add-eo",method=RequestMethod.POST)
+	public ResponseEntity<String> addEO(@RequestBody ElectoralOfficer eo) throws NoSuchRecordException {
+		ResponseEntity<String> response = null;
+		if (!eoService.addEO(eo)) {
+			response = new ResponseEntity<String>(eo.toString(), HttpStatus.CREATED);
+		}
+		return response;
+	}
+
+	@RequestMapping(path = "/get-all-officers", method = RequestMethod.GET)
+	public List<ElectoralOfficer> getAllOfficers() throws NoSuchRecordException {
+		List<ElectoralOfficer> list = adminService.getAllOfficers();
+		return list;
+	}
+
+	@RequestMapping(path = "/get-officer-by-name/{officerName}",method=RequestMethod.GET)
+	public ResponseEntity<List<ElectoralOfficer>> getofficerByName(@PathVariable(name = "officerName") String electoralOfficerName) {
+
+		return new ResponseEntity<List<ElectoralOfficer>>(adminService.getOfficerByName(electoralOfficerName),HttpStatus.OK);
+	}
+	
+
+	@RequestMapping(path = "/update-officer", method = RequestMethod.PUT)
+	public ResponseEntity<ElectoralOfficer> updateOfficer(@Valid @RequestBody ElectoralOfficer electoralofficer) throws NoSuchRecordException {
+		ResponseEntity<ElectoralOfficer> response = new ResponseEntity<>(electoralofficer, HttpStatus.CREATED);
+		adminService.updateOfficer(electoralofficer);
+		return response;
+	}
+
+	@RequestMapping(path = "/delete-officer-by-id/{officerId}",method=RequestMethod.DELETE)
+	public ResponseEntity<String> deleteOfficer(@PathVariable("officerId") String electoralOfficerId)
+			throws NoSuchRecordException {
+		ResponseEntity<String> response = null;
+		if (adminService.deleteOfficer(electoralOfficerId)) {
+			response = new ResponseEntity<String>("Officer Deleted", HttpStatus.OK);
+		}
+		return response;
+	}
 
 }
+
