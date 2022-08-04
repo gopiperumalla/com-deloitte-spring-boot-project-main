@@ -75,7 +75,7 @@ public class VoterService {
 		String result = null;
 		Vote vote = new Vote();
 		vote.setEpic(epic);
-		vote.setCandidate(candidateId);
+		vote.setCandidateId(candidateId);
 		voteRepository.save(vote);
 		result = "Thanks for Voting "
 				+ candidatesRepository.findById(candidateId).get().getCandidateName();

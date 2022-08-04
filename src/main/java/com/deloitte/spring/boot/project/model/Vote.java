@@ -56,12 +56,12 @@ public class Vote {
 		this.voteId = voteId;
 	}
 
-	public int getCandidate() {
+	public int getCandidateId() {
 		return candidateId;
 	}
 
-	public void setCandidate(int candidate) {
-		this.candidateId = candidate;
+	public void setCandidateId(int candidateId) {
+		this.candidateId = candidateId;
 	}
 
 	public String getEpic() {

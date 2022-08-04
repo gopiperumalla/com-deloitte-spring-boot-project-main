@@ -36,7 +36,7 @@ public class VoterController {
 	@RequestMapping(path = "/castVote",method=RequestMethod.POST)
 	public ResponseEntity<String> castVote(@RequestBody Vote vote) throws NoSuchRecordException {
 		ResponseEntity<String> response = null;
-		String result = voterService.voteCasting(vote.getEpic(), vote.getCandidate());
+		String result = voterService.voteCasting(vote.getEpic(), vote.getCandidateId());
 		if (result != null) {
 			response = new ResponseEntity<String>(result, HttpStatus.CREATED);
 		}
@@ -55,7 +55,7 @@ public class VoterController {
 		return new ResponseEntity<Voter>(voterService.getVoterByEpic(epic),HttpStatus.OK);
 	}
 	
-	@RequestMapping(path = "/update-voter",method=RequestMethod.POST)
+	@RequestMapping(path = "/update-voter",method=RequestMethod.PUT)
 	public ResponseEntity<Voter> updateVoter(@RequestBody Voter voter) {
 		voterService.updateVoter(voter);
 		return new ResponseEntity<Voter>(HttpStatus.OK);
